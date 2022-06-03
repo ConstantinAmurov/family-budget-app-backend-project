@@ -37,7 +37,21 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $budget = new Budget;
+
+        $lastValue = Budget::latest()->first();
+
+        if ($lastValue) {
+            $budget->id = $lastValue->id + 1;
+        } else $budget->id = 1;
+
+        $budget->amount = $request->amount;
+        $budget->title = $request->title;
+        $budget->category = $request->category;
+
+        $budget->save();
+
+        return $budget;
     }
 
     /**
@@ -46,9 +60,10 @@ class BudgetController extends Controller
      * @param  \App\Models\Budget  $budget
      * @return \Illuminate\Http\Response
      */
-    public function show(Budget $budget)
+    public function show($id)
     {
-        //
+        $budget = Budget::findOrFail($id);
+        return $budget;
     }
 
     /**
@@ -69,9 +84,18 @@ class BudgetController extends Controller
      * @param  \App\Models\Budget  $budget
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Budget $budget)
+    public function update(Request $request, $id)
     {
-        //
+        $budget = Budget::findOrFail($id);
+
+        $budget->amount = $request->amount;
+        $budget->title = $request->title;
+        $budget->category = $request->category;
+
+        $budget->save();
+
+        return $budget;
+
     }
 
     /**
@@ -83,7 +107,7 @@ class BudgetController extends Controller
     public function destroy($id)
     {
         $budget = Budget::findOrFail($id);
-        if($budget) {
+        if ($budget) {
             $budget->delete();
         }
         return $budget;

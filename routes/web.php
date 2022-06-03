@@ -20,5 +20,13 @@ Route::get('/', function () {
 
 Route::get('/budgets', [BudgetController::class,'index']);
 
+Route::get('/budgets/{id}', [BudgetController::class,'show']);
+Route::put('/budgets/{id}', [BudgetController::class,'update']);
+
+
+
+Route::post('/budgets', [BudgetController::class,'store']);
+
+
 Route::delete('/budgets/{id}', [BudgetController::class,'destroy']);
 
